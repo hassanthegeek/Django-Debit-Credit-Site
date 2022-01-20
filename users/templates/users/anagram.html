@@ -1,0 +1,20 @@
+{% extends 'account/base.html' %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="first" id="" class="form-control m-3" value="{%if form.is_bound%}{{form.first.value}}{% endif %}">
+    {% for error in form.first.errors %}
+    <small class="text-danger">{{error}}</small>
+    {% endfor %}
+    <input type="text" name="second" id="" class="form-control m-3">
+    {% for error in form.second.errors %}
+    <small class="text-danger">{{error}}</small>
+    {% endfor %}
+    <hr>
+    {% for error in form.non_field_errors %}
+    <small class="text-danger">{{error}}</small>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Check</button>
+
+</form>
+{% endblock content %}

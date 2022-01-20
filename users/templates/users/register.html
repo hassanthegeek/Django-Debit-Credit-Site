@@ -1,0 +1,17 @@
+{% extends 'accounts/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row d-flex mx-auto content-section">
+    <div class="col">
+        <h3 class="my-3">Register Yourself!</h3>
+        <hr>
+        <form  method="post">
+            {% csrf_token %}
+            {{form |crispy}}
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <hr>
+        <legend class="lead small">have an account? <a href="#">sign in</a></legend>
+    </div>
+</div>
+{% endblock content %}

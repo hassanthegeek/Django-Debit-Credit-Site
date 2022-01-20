@@ -1,0 +1,79 @@
+{% extends 'accounts/base.html' %}
+{% load account_tags %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+      {% if user %}
+        <h2>Welcome! {{user.username}}</h2>
+      {% else %}
+        <h2>Welcome! Guest User</h2>
+      {% endif %}
+      </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                <div class="card-header">
+                    Total Debit
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title text-center text-white">
+                      {{shops.menu.td|two_decimal_places}} pkr
+                    </h1>
+                  <p class="card-text font-weight-bold">You have to pay.</p>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                <div class="card-header">Total Credit</div>
+                <div class="card-body">
+                  <h1 class="card-title text-white">{{shops.menu.tc|two_decimal_places}} pkr</h1>
+                  <p class="card-text font-weight-bold">You will get.</p>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                <div class="card-header">Balance</div>
+                <div class="card-body">
+                  <h1 class="card-title text-white">{{shops.menu.tb|two_decimal_places}} pkr</h1>
+                  <p class="card-text font-weight-bold">It is your balance.</p>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container">
+            <h3 class=" display-4">Your accounts summary!</h3>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Shop</th>
+                    <th scope="col">Debit</th>
+                    <th scope="col">Credit</th>
+                    <th scope="col">Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for shop in shops.r %}
+                    <tr>
+                      <th scope="row">{{forloop.counter}}</th>
+                      <td><a href="{% url 'account:shop-account-details' shop.id %}">{{shop.name}}</a></td>
+                      <td>{{shop.td|two_decimal_places}}</td>
+                      <td>{{shop.tc|makepos|two_decimal_places}}</td>
+                      <td>{{shop.balance|two_decimal_places}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

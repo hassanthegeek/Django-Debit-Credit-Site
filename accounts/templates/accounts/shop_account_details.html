@@ -1,0 +1,105 @@
+{% extends 'accounts/base.html' %}
+{% load account_tags %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            {% if user %}
+              <h2>Shop: "{{entries.shop.name}}"</h2>
+            {% else %}
+              <h2>Welcome! Guest User</h2>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row my-2 mx-1">
+        {% if entries.shop.id %}
+        <a href="{% url 'account:add-entry' entries.shop.id %}" class="btn btn-outline-dark">Add Entry</a>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                <div class="card-header">
+                    Total Debit
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title text-center text-white">
+                      {{entries.total_debit.td|none_or_zero}}  pkr
+                    </h1>
+                  <p class="card-text font-weight-bold">You have to pay.</p>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                <div class="card-header">Total Credit</div>
+                <div class="card-body">
+                  <h1 class="card-title text-center text-white">{{entries.total_credit.tc|makepos|none_or_zero|two_decimal_places}} pkr</h1>
+                  <p class="card-text font-weight-bold">You will get.</p>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                <div class="card-header">Balance</div>
+                <div class="card-body">
+                  <h1 class="card-title text-center text-white">{{entries.total_balance.tb|none_or_zero|two_decimal_places}} pkr</h1>
+                  <p class="card-text font-weight-bold">It is your balance.</p>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container">
+            <h3 class=" display-4">Your accounts summary!</h3>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Dated</th>
+                    <th scope="col">Remarks</th>
+                    <th scope="col">Debit</th>
+                    <th scope="col">Credit</th>
+                    <th scope="col">Balance</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for entry in entries.data %}
+                    <tr>
+                      <th scope="row">{{forloop.counter}}</th>
+                      <td>{{entry.date|date:"m-d-y"}}</td>
+                      <td>{{entry.remarks}}</td>
+                      {% if entry.amount > 0 %}
+                      <td>
+                        {{entry.amount|makepos|two_decimal_places}}
+                      </td>
+                      {% else %}
+                      <td>0.00</td>
+                      {% endif %}
+                      
+                      {% if entry.amount < 0 %}
+                        <td>{{entry.amount|makepos|two_decimal_places}}</td>
+                      {% else %}
+                        <td>0.00</td>
+                      {% endif %}
+                      <td>{{entry.balance|two_decimal_places}}</td>
+                      <td>
+                        <a href="{% url 'account:delete-ad' entry.id %}" class="btn-sm btn-danger">X</a>
+                        <a href="{% url 'account:update-ad' entry.id %}" class="ml-2 btn-sm btn-warning">U</a>
+                      </td>
+
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

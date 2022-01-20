@@ -1,0 +1,10 @@
+{% extends 'accounts/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="row d-flex mx-auto container">
+        <div class="col-6 content-section mx-auto">
+            <h3 class="my-3">Thanks for spending your valueable time with us.!</h3>
+            <hr>
+        <legend class="lead small">Do you want to login again? <a href="{% url 'user:login' %}">login</a></legend>
+    </div>
+{% endblock content %}
